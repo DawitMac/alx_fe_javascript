@@ -73,6 +73,41 @@ function exportToJsonFile() {
     URL.revokeObjectURL(url);
 }
 
+function populateCategories() {
+    const categoryFilter = document.getElementById('categoryFilter');
+    const categories = quotes.map(quote => quote.category);
+    const uniqueCategories = [...new Set(categories)];
+
+    uniqueCategories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categoryFilter.appendChild(option);
+    });
+}
+
+// Function to filter quotes based on selected category
+function filterQuotes() {
+    const selectedCategory = document.getElementById('categoryFilter').value;
+    const filteredQuotes = selectedCategory === "all" ? quotes : quotes.filter(quote => quote.category === selectedCategory);
+    
+    displayQuotes(filteredQuotes);
+    localStorage.setItem('selectedCategory', selectedCategory);
+}
+
+// Function to display filtered quotes
+function displayQuotes(quotes) {
+    const quoteDisplay = document.getElementById('quoteDisplay');
+    quoteDisplay.innerHTML = '';
+
+    quotes.forEach(quote => {
+        const quoteDiv = document.createElement('div');
+        quoteDiv.innerHTML = `<p><strong>Category:</strong> ${quote.category}</p>
+                              <p><em>${quote.text}</em></p>`;
+        quoteDisplay.appendChild(quoteDiv);
+    });
+}
+
 // Function to import quotes from a JSON file
 function importFromJsonFile(event) {
     const fileReader = new FileReader();
@@ -89,8 +124,14 @@ document.addEventListener('DOMContentLoaded', function() {
     loadQuotes();
     showRandomQuote();
     createAddQuoteForm();
+    populateCategories();
     
     document.getElementById('newQuote').addEventListener('click', showRandomQuote);
     document.getElementById('exportButton').addEventListener('click', exportToJsonFile);
     document.getElementById('importFile').addEventListener('change', importFromJsonFile);
+    const selectedCategory = localStorage.getItem('selectedCategory') || "all";
+    document.getElementById('categoryFilter').value = selectedCategory;
+    filterQuotes();
 });
+
+
