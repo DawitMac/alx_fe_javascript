@@ -119,12 +119,16 @@ function importFromJsonFile(event) {
     };
     fileReader.readAsText(event.target.files[0]);
 }
-function fetchFromServer() {
+function fetchQuotesFromServer() {
+    // Simulated fetching data from a mock API
+    // Replace this with an actual API endpoint
     fetch('https://jsonplaceholder.typicode.com/posts')
         .then(response => response.json())
         .then(data => {
             // Update local data with data from the server
-            // Handle conflicts if necessary
+            quotes = data;
+            saveQuotes();
+            showRandomQuote();
             console.log('Data fetched from the server:', data);
         })
         .catch(error => {
