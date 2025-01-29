@@ -144,6 +144,30 @@ async function fetchQuotesFromServer() {
     }
 }
 
+// Function to sync local quotes with the server
+async function syncQuotes() {
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(quotes)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to sync data with the server');
+        }
+
+        const data = await response.json();
+        quotes = data; // Update local quotes with data from the server
+        saveQuotes();
+        showRandomQuote();
+        console.log('Quotes synced with the server:', data);
+    } catch (error) {
+        console.error('Error syncing data with the server:', error);
+    }
+}
 
 function syncWithServer() {
     fetchFromServer(); 
