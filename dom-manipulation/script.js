@@ -119,21 +119,21 @@ function importFromJsonFile(event) {
     };
     fileReader.readAsText(event.target.files[0]);
 }
-function fetchQuotesFromServer() {
-    // Simulated fetching data from a mock API
-    // Replace this with an actual API endpoint
-    fetch('https://jsonplaceholder.typicode.com/posts')
-        .then(response => response.json())
-        .then(data => {
-            // Update local data with data from the server
-            quotes = data;
-            saveQuotes();
-            showRandomQuote();
-            console.log('Data fetched from the server:', data);
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
+async function fetchQuotesFromServer() {
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+        if (!response.ok) {
+            throw new Error('Failed to fetch data');
+        }
+
+        const data = await response.json();
+        quotes = data;
+        saveQuotes();
+        showRandomQuote();
+        console.log('Data fetched from the server:', data);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
 }
 
 
