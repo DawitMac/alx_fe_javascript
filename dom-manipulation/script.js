@@ -119,9 +119,17 @@ function importFromJsonFile(event) {
     };
     fileReader.readAsText(event.target.files[0]);
 }
+// Async function to fetch quotes from the server using a POST request with headers
 async function fetchQuotesFromServer() {
     try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ key: 'value' }) // Replace this with your actual data to send
+        });
+
         if (!response.ok) {
             throw new Error('Failed to fetch data');
         }
