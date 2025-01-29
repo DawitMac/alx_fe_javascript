@@ -119,6 +119,28 @@ function importFromJsonFile(event) {
     };
     fileReader.readAsText(event.target.files[0]);
 }
+function fetchFromServer() {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+        .then(response => response.json())
+        .then(data => {
+            // Update local data with data from the server
+            // Handle conflicts if necessary
+            console.log('Data fetched from the server:', data);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
+
+function syncWithServer() {
+    fetchFromServer(); 
+
+}
+
+function handleConflicts(localData, serverData) {
+   
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     loadQuotes();
@@ -132,6 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedCategory = localStorage.getItem('selectedCategory') || "all";
     document.getElementById('categoryFilter').value = selectedCategory;
     filterQuotes();
+    setInterval(syncWithServer, 60000);
 });
 
 
