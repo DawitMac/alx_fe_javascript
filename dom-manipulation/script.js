@@ -145,6 +145,7 @@ async function fetchQuotesFromServer() {
 }
 
 // Function to sync local quotes with the server
+// Function to sync local quotes with the server
 async function syncQuotes() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
@@ -164,6 +165,7 @@ async function syncQuotes() {
         saveQuotes();
         showRandomQuote();
         console.log('Quotes synced with the server:', data);
+        console.log('Quotes synced with server!');
     } catch (error) {
         console.error('Error syncing data with the server:', error);
     }
